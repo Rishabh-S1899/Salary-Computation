@@ -15,7 +15,10 @@ import time
 # --- 1. Data Loading and Preprocessing ---
 
 def load_and_clean_data(url):
-    """Loads and cleans the Adult Income dataset."""
+    """
+    Loads and cleans the Adult Income dataset, and reports the number of
+    rows dropped due to missing values.
+    """
     column_names = [
         'age', 'workclass', 'fnlwgt', 'education', 'education-num',
         'marital-status', 'occupation', 'relationship', 'race', 'sex',
@@ -25,7 +28,23 @@ def load_and_clean_data(url):
         url, header=None, names=column_names, na_values=' ?',
         sep=r'\s*,\s*', engine='python'
     )
+
+    # 1. Get the number of rows before dropping missing values
+    initial_rows = df.shape[0]
+    print(f"Initial number of rows loaded: {initial_rows}")
+
+    # 2. Drop the rows with missing values
     df.dropna(inplace=True)
+
+    # 3. Get the number of rows after dropping
+    final_rows = df.shape[0]
+
+    # 4. Calculate and print the number of dropped rows
+    rows_dropped = initial_rows - final_rows
+    print(f"Number of rows with missing values dropped: {rows_dropped}")
+    print(f"Final number of rows: {final_rows}")
+
+    # 5. Reset the index and return the cleaned DataFrame
     df.reset_index(drop=True, inplace=True)
     return df
 
